@@ -1,4 +1,4 @@
-package com.matheuscordeiro.myfinancesapi.model.entity;
+package com.matheuscordeiro.myfinancesapi.model.entities;
 
 import lombok.*;
 import javax.persistence.*;

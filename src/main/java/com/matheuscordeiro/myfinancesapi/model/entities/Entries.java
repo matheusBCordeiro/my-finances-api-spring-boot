@@ -1,6 +1,6 @@
-package com.matheuscordeiro.myfinancesapi.model.entity;
+package com.matheuscordeiro.myfinancesapi.model.entities;
 
-import com.matheuscordeiro.myfinancesapi.model.entity.enums.*;
+import com.matheuscordeiro.myfinancesapi.model.entities.enums.*;
 import lombok.*;
 import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 
