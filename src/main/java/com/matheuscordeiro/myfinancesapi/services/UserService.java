@@ -1,6 +1,6 @@
 package com.matheuscordeiro.myfinancesapi.services;
 
-import com.matheuscordeiro.myfinancesapi.exceptions.AuthenticationError;
+import com.matheuscordeiro.myfinancesapi.exceptions.AuthenticationErrorException;
 import com.matheuscordeiro.myfinancesapi.exceptions.BusinessException;
 import com.matheuscordeiro.myfinancesapi.model.entities.User;
 import com.matheuscordeiro.myfinancesapi.model.repositories.UserRepository;
@@ -22,9 +22,9 @@ public class UserService implements IUserService {
         Optional<User> user = userRepository.findByEmail(email);
 
         if(!user.isPresent())
-            throw new AuthenticationError("Usuário não encontrado para o email informado.");
+            throw new AuthenticationErrorException("Usuário não encontrado para o email informado.");
         if(!user.get().getPassword().equals(password))
-            throw new AuthenticationError("Senha inválida.");
+            throw new AuthenticationErrorException("Senha inválida.");
 
         return user.get();
     }
