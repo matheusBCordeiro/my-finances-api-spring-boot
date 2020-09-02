@@ -42,4 +42,9 @@ public class UserService implements IUserService {
         if (exist)
             throw new BusinessException("Já existe um usuário cadastrado com este email");
     }
+
+    @Override
+    public Optional<User> getById(Long id) {
+        return userRepository.findById(id);
+    }
 }

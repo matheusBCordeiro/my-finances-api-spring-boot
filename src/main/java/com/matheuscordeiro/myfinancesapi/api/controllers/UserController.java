@@ -4,15 +4,16 @@ import com.matheuscordeiro.myfinancesapi.api.dto.UserAuthDTO;
 import com.matheuscordeiro.myfinancesapi.api.dto.UserDTO;
 import com.matheuscordeiro.myfinancesapi.exceptions.BusinessException;
 import com.matheuscordeiro.myfinancesapi.model.entities.User;
+import com.matheuscordeiro.myfinancesapi.services.interfaces.IEntriesService;
 import com.matheuscordeiro.myfinancesapi.services.interfaces.IUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.math.BigDecimal;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/users")
@@ -21,6 +22,9 @@ public class UserController {
 
     @Autowired
     public IUserService userService;
+
+    @Autowired
+    public IEntriesService entriesService;
 
     @PostMapping("/auth")
     public ResponseEntity authentication(@RequestBody UserAuthDTO userAuthDto) {
@@ -45,5 +49,17 @@ public class UserController {
         } catch (BusinessException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+    }
+
+    @GetMapping("{id}/balance")
+    public ResponseEntity getBalance(@PathVariable Long id) {
+        Optional<User> user = userService.getById(id);
+
+        if(!user.isPresent()) {
+            return new ResponseEntity( HttpStatus.NOT_FOUND );
+        }
+
+        BigDecimal balance = entriesService.getBalanceByUser(id);
+        return ResponseEntity.ok(balance);
     }
 }

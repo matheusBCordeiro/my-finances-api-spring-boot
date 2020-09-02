@@ -18,7 +18,7 @@ public class Entries {
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private Long id;
 
     @Column
     private String description;

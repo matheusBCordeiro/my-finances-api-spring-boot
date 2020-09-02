@@ -5,6 +5,8 @@ import com.matheuscordeiro.myfinancesapi.model.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 public interface IUserService {
 
     User authenticate(String email, String password);
@@ -12,4 +14,6 @@ public interface IUserService {
     User saveUser(User user);
 
     void validateEmail(String email);
+
+    Optional<User> getById(Long id);
 }

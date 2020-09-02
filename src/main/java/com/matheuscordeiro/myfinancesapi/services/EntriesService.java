@@ -3,6 +3,7 @@ package com.matheuscordeiro.myfinancesapi.services;
 import com.matheuscordeiro.myfinancesapi.exceptions.BusinessException;
 import com.matheuscordeiro.myfinancesapi.model.entities.Entries;
 import com.matheuscordeiro.myfinancesapi.model.entities.enums.EntriesStatus;
+import com.matheuscordeiro.myfinancesapi.model.entities.enums.EntriesType;
 import com.matheuscordeiro.myfinancesapi.model.repositories.EntriesRepository;
 import com.matheuscordeiro.myfinancesapi.services.interfaces.IEntriesService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class EntriesService implements IEntriesService {
@@ -84,5 +86,27 @@ public class EntriesService implements IEntriesService {
         if(entries.getType() == null) {
             throw new BusinessException("Informe um tipo de Lançamento.");
         }
+    }
+
+    @Override
+    public Optional<Entries> getById(Long id) {
+        return entriesRepository.findById(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public BigDecimal getBalanceByUser(Long userId) {
+        BigDecimal revenues = entriesRepository.getBalanceByEntriesTypeAndUserAndStatus(userId, EntriesType.REVENUE , EntriesStatus.PAID);
+        BigDecimal expenditures = entriesRepository.getBalanceByEntriesTypeAndUserAndStatus(userId, EntriesType.EXPENDITURE, EntriesStatus.PAID);
+
+        if(revenues == null) {
+            revenues = BigDecimal.ZERO;
+        }
+
+        if(expenditures == null) {
+            expenditures = BigDecimal.ZERO;
+        }
+
+        return revenues.subtract(expenditures);
     }
 }
