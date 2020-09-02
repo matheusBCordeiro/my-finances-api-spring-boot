@@ -15,4 +15,6 @@ public interface IEntriesService {
     List<Entries> getEntries(Entries entries);
 
     void updateStatus(Entries entries, EntriesStatus entriesStatus);
+
+    void validateEntries(Entries entries);
 }
